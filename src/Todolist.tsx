@@ -1,14 +1,25 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {IconButton, Button, Checkbox} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {TodolistPropsType} from './types';
 
-export function Todolist(props: TodolistPropsType) {
-    const addTask = (title: string) => {
-        props.addTask(title, props.id);
+export const Todolist = React.memo((props: TodolistPropsType) => {
+    //console.log("Todolist called")
+
+    let tasksForTodolist = props.tasks
+
+    if (props.filter === 'active') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone === false);
     }
+    if (props.filter === 'completed') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone === true);
+    }
+
+    const addTask = useCallback((title: string) => {
+        props.addTask(title, props.id);
+    }, [props.addTask, props.id])
 
     const removeTodolist = () => {
         props.removeTodolist(props.id);
@@ -31,7 +42,7 @@ export function Todolist(props: TodolistPropsType) {
         <AddItemForm addItem={addTask}/>
         <ul style={{listStyle: "none", paddingLeft: "0"}}>
             {
-                props.tasks.map(t => {
+                tasksForTodolist.map(t => {
                     const onClickHandler = () => props.removeTask(t.id, props.id)
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         let newIsDoneValue = e.currentTarget.checked;
@@ -79,6 +90,6 @@ export function Todolist(props: TodolistPropsType) {
             </Button>
         </div>
     </div>
-}
+})
 
 
