@@ -5,7 +5,7 @@ import {AddItemFormPropsType} from './types';
 
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
-    console.log("AddItemForm clicked")
+    // console.log("AddItemForm clicked")
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
@@ -32,11 +32,6 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     }
 
     return <div>
-        {/*<input value={title}*/}
-        {/*       onChange={onChangeHandler}*/}
-        {/*       onKeyPress={onKeyPressHandler}*/}
-        {/*       className={error ? "error" : ""}*/}
-        {/*/>*/}
         <TextField
             variant={"outlined"}
             error={!!error}
@@ -46,12 +41,8 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
             onChange={onChangeHandler}
             onKeyPress={onKeyPressHandler}
         />
-        {/*<Button variant={"contained"} color="primary" onClick={addItem}>ADD*/}
-        {/*</Button>*/}
         <IconButton onClick={addItem}>
             <AddBox/>
         </IconButton>
-        {/*<button onClick={addItem}>+</button>*/}
-        {/*{error && <div className="error-message">{error}</div>}*/}
     </div>
 })

@@ -104,3 +104,13 @@ export type EditableSpanPropsType = {
     value: string
     onChange: (newValue: string) => void
 }
+
+//Task.tsx types
+
+export type TaskPropsType = {
+    task: TaskType
+    todolistID: string
+    removeTask: (taskId: string, todolistId: string) => void
+    changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+}
