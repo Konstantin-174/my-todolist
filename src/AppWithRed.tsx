@@ -58,7 +58,10 @@ function AppWithRedux() {
         <div className="App">
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
+                    <IconButton edge="start"
+                                color="inherit"
+                                aria-label="menu"
+                    >
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
@@ -72,7 +75,9 @@ function AppWithRedux() {
                       style={{padding: '20px 0'}}>
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
-                <Grid container={true} spacing={3}>
+                <Grid container={true}
+                      spacing={3}
+                >
                     {
                         todolists.map(tl => {
                             return (

@@ -6,71 +6,85 @@ import {Delete} from '@material-ui/icons';
 import {TodolistPropsType} from './types';
 import {Task} from './Task';
 
-export const Todolist = React.memo((props: TodolistPropsType) => {
-    //console.log("Todolist called")
+export const Todolist: React.FC<TodolistPropsType> = React.memo(({
+                                                                     id,
+                                                                     tasks,
+                                                                     filter,
+                                                                     title,
+                                                                     changeFilter,
+                                                                     addTask,
+                                                                     removeTodolist,
+                                                                     changeTodolistTitle,
+                                                                     changeTaskTitle,
+                                                                     removeTask,
+                                                                     changeTaskStatus
+                                                                 }) => {
 
-    let tasksForTodolist = props.tasks
+    let tasksForTodolist = tasks
 
-    if (props.filter === 'active') {
-        tasksForTodolist = props.tasks.filter(t => t.isDone === false);
+    if (filter === 'active') {
+        tasksForTodolist = tasks.filter(t => t.isDone === false)
     }
-    if (props.filter === 'completed') {
-        tasksForTodolist = props.tasks.filter(t => t.isDone === true);
+    if (filter === 'completed') {
+        tasksForTodolist = tasks.filter(t => t.isDone === true)
     }
 
-    const addTask = useCallback((title: string) => {
-        props.addTask(title, props.id);
-    }, [props.addTask, props.id])
+    const addTaskInto = useCallback((title: string) => {
+        addTask(title, id)
+    }, [addTask, id])
 
-    const removeTodolist = () => {
-        props.removeTodolist(props.id);
-    }
-    const changeTodolistTitle = useCallback((title: string) => {
-        props.changeTodolistTitle(props.id, title);
-    }, [props.changeTodolistTitle, props.id])
+    const removeTodolistInto = useCallback(() => {
+        removeTodolist(id)
+    }, [removeTodolist, id])
+    const changeTodolistTitleInto = useCallback((title: string) => {
+        changeTodolistTitle(id, title)
+    }, [changeTodolistTitle, id])
 
-    const onAllClickHandler = () => props.changeFilter("all", props.id);
-    const onActiveClickHandler = () => props.changeFilter("active", props.id);
-    const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
+    const onAllClickHandler = useCallback(() => changeFilter('all', id), [changeFilter, id]);
+    const onActiveClickHandler = useCallback(() => changeFilter('active', id), [changeFilter, id]);
+    const onCompletedClickHandler = useCallback(() => changeFilter('completed', id), [changeFilter, id]);
 
     return <div>
-        <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
-            <IconButton onClick={removeTodolist}>
+        <h3>
+            <EditableSpan value={title}
+                          onChange={changeTodolistTitleInto}
+            />
+            <IconButton onClick={removeTodolistInto}>
                 <Delete/>
             </IconButton>
             {/*<button onClick={removeTodolist}>x</button>*/}
         </h3>
-        <AddItemForm addItem={addTask}/>
-        <ul style={{listStyle: "none", paddingLeft: "0"}}>
+        <AddItemForm addItem={addTaskInto}/>
+        <ul style={{listStyle: 'none', paddingLeft: '0'}}>
             {
                 tasksForTodolist.map(t => {
                     return <Task key={t.id}
                                  task={t}
-                                 todolistID={props.id}
-                                 removeTask={props.removeTask}
-                                 changeTaskStatus={props.changeTaskStatus}
-                                 changeTaskTitle={props.changeTaskTitle}
+                                 todolistID={id}
+                                 removeTask={removeTask}
+                                 changeTaskStatus={changeTaskStatus}
+                                 changeTaskTitle={changeTaskTitle}
                     />
                 })
             }
         </ul>
         <div>
-            <Button size={"small"}
-                    variant={props.filter === 'all' ? "contained" : "outlined"}
-                    color={"primary"}
-                    // className={props.filter === 'all' ? "active-filter" : ""}
+            <Button size={'small'}
+                    variant={filter === 'all' ? 'contained' : 'outlined'}
+                    color={'primary'}
+                // className={props.filter === 'all' ? "active-filter" : ""}
                     onClick={onAllClickHandler}>All
             </Button>
-            <Button size={"small"}
-                    variant={props.filter === 'active' ? "contained" : "outlined"}
-                    color={"primary"}
-                    // className={props.filter === 'active' ? "active-filter" : ""}
+            <Button size={'small'}
+                    variant={filter === 'active' ? 'contained' : 'outlined'}
+                    color={'primary'}
+                // className={props.filter === 'active' ? "active-filter" : ""}
                     onClick={onActiveClickHandler}>ACTIVE
             </Button>
-            <Button size={"small"}
-                    variant={props.filter === 'completed' ? "contained" : "outlined"}
-                    color={"primary"}
-                    // className={props.filter === 'completed' ? "active-filter" : ""}
+            <Button size={'small'}
+                    variant={filter === 'completed' ? 'contained' : 'outlined'}
+                    color={'primary'}
+                // className={props.filter === 'completed' ? "active-filter" : ""}
                     onClick={onCompletedClickHandler}>COMPLETED
             </Button>
         </div>
